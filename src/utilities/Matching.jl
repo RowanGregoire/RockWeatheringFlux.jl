@@ -530,6 +530,12 @@
         return .!matched
     end
 
+
+    # Mostly deprecated by adding more methods to find_unmatched. Current match_rocktype 
+    # (for macrostrat) does what find_unmatched_useful does, but with a bit more whatever 
+    # I was thinking when I wrote the code. IDK. I think the updated version is also better 
+    # because if it IDs, e.g., sedimentary, it only searches in sedimentary types for a 
+    # better match
     """
     ```julia
     find_unmatched_useful(cats)
