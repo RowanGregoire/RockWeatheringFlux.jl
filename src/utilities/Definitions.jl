@@ -93,8 +93,11 @@
 
     # Mass of eroded material  
     eroded_out = "output/eroded/$dataset/erodedmaterial_$(version)_$tag.h5"
+
+    # Erosion rate at each point 
+    erosion_rates = "output/eroded/$dataset/erosionrates_$(version)_$tag.tsv"
     
-    export matchedbulk_io, eroded_out
+    export matchedbulk_io, eroded_out, erosion_rates
 
 
 # --- Results
