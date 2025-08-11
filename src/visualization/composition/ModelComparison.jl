@@ -219,7 +219,7 @@
 
 ## --- Eroded sediment 
     h_ersn = deepcopy(h_base)
-    title!(h_ersn, "B. Weathered Material")
+    title!(h_ersn, "B. Eroded Material")
 
     # Errors
     plot!(h_ersn, ratio.ersn,
@@ -238,7 +238,7 @@
     # Values 
     plot!(h_ersn, x, Measurements.value.(ratio.ersn), 
         markershape=:circle, 
-        label="Weathered Material",
+        label="Eroded Material",
         color=colors.sed, msc=:auto, 
         markersize=6, linewidth=2,
     )

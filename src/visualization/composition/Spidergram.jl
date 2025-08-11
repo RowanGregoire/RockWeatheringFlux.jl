@@ -212,7 +212,7 @@
 
 ## --- Eroded material 
     h_ersn = deepcopy(h)
-    title!(h_ersn, "C. Weathered Material")
+    title!(h_ersn, "C. Eroded Material")
 
     # Error bars (smaller than point size for all values)
     spidergram!(h_ersn, 
@@ -292,8 +292,8 @@
         markershape=:circle, markersize=5,) 
 
     plot!(h_leg, [1],[1], label="\t", color=:white)
-    plot!(h_leg, [1],[1], label="C. Weathered Material", color=:white)
-    plot!(h_leg, [1],[1], label="Weathered Material", 
+    plot!(h_leg, [1],[1], label="C. Eroded Material", color=:white)
+    plot!(h_leg, [1],[1], label="Eroded Material", 
         seriescolor=colors.sed, msc=:auto, 
         markershape=:circle, markersize=5,) 
     plot!(h_leg, [1],[1], label="Muller et al., 2021 (Suspended Sediment)", 
