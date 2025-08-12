@@ -15,9 +15,8 @@
 
 
 ## --- Slope vs. erosion rate 
-    using Isoplot
+    using Isoplot: yorkfit
     using StatsBase
-    include("../utilities/yorkfit.jl")
 
     octopusdata = importdataset("output/octopusdata.tsv",'\t', importas=:Tuple)
     basin_srtm = importdataset("output/basin_srtm15plus_avg_maxslope.tsv", '\t', importas=:Tuple)
@@ -37,13 +36,7 @@
     )
 
     # Get mean in regular space for bins with equal numbers of points
-    c, m, ex, ey, ey_bound = binmeans_percentile(x.v, y.v, step=5, bounderror=true)
-
-    # Update percentiles to work for plotting
-    l, u = untupleify(ey_bound)
-    l = m .- l      # Lower bound
-    u = u .- m      # Upper bound
-    ey_bound = [(l[i]*2, m[i]*2) for i in eachindex(l)]
+    c, m, ex, ey = binmeans_percentile(x.v, y.v, binwidth=5)
 
     # Fit slope to means
     fobj = yorkfit(collect(c), ex, log.(m), log.(ey))

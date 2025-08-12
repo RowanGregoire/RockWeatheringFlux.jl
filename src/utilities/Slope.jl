@@ -548,8 +548,7 @@
     """
     ```julia
     binmeans_percentile(x::AbstractArray, y::AbstractArray; 
-        step::Number=5, 
-        [bounderror]
+        binwidthstep::Number=5, 
     )
     ```
 
@@ -559,62 +558,34 @@
 
     # Example
     ```julia
-    (c, m, ex, ey) = binmeans_percentile(x, y, step=5)
+    (c, m, ex, ey) = binmeans_percentile(x, y, binwidth=5)
     ```
     """
-    function binmeans_percentile(x::AbstractArray, y::AbstractArray; 
-            step::Number=5,
-            bounderror::Bool=false
-        )
+    function binmeans_percentile(x::AbstractArray, y::AbstractArray; binwidth::Number=5)
         @assert length(x) == length(y) "x and y must be equal lengths."
+        @assert 100 % binwidth == 0 "binwidth should be divisible by 100."
 
-        # Sort data by x value
-        p = sortperm(x)
-        x = x[p]
-        y = y[p]
+        # Get bin edges 
+        t = .!isnan.(x);
+        binedges = [percentile(x[t], i) for i=0:binwidth:100]
 
-        # Calculate bin edges and centers. Last bin may be larger than expected
-        binedges = collect(0:step:100)
-        if binedges[end] != 100 
-            binedges[end] = 100
-        end
-        
-        # Calculate the index of each percentile in x, correcting for zero-indexing
-        r = ceil.(Int, binedges ./ 100 .* length(x))
-
-        # Calculate bin centers
+        # Preallocate 
         nbins = length(binedges) - 1
-        bincenters = [(x[r[i]+1] + x[r[i+1]]) / 2 for i = 1:nbins]
+        c, m, ex, ey = zeros(nbins), zeros(nbins), zeros(nbins), zeros(nbins)
 
-        # Calculate means and variances
-        μ = zeros(nbins)       # Mean
-        σȳ = zeros(nbins)      # Y standard deviation
-        σx̄ = zeros(nbins)      # X standard deviation
+        # Get means and standard errors for each bin 
+        for i = 1:nbins 
+            s = t .& (binedges[i] .< x .< binedges[i+1])
 
-        # Since we've sorted the data, figuring out what bin each value belongs to is easy!
-        for i = 1:nbins
-            yᵢ = y[r[i]+1:r[i+1]]
-            n = length(yᵢ)
-            
-            μ[i] = nanmean(yᵢ)
-            σȳ[i] = nanstd(yᵢ) / sqrt(n)
-            σx̄[i] = nanstd(x[r[i]+1:r[i+1]]) / sqrt(n)
+            m[i] = nanmean(y[s])
+            c[i] = (binedges[i] + binedges[i+1])/2
+            ey[i] = nanstd(y[s]) / sqrt(count(s))
+            ex[i] = nanstd(x[s]) / sqrt(count(s))
         end
-        
-        # Calculate 5th and 95th percentiles for each bin
-        if bounderror == true
-            yp = fill((0.0,0.0), nbins)
-            for i = 1:nbins
-                yᵢ = y[r[i]+1:r[i+1]]
-                yp[i] = percentile(yᵢ, 5), percentile(yᵢ, 95)
-            end
 
-            return bincenters, μ, σx̄, σȳ, yp
-        else
-        # Or don't!
-            return bincenters, μ, σx̄, σȳ
-        end
+        return c,m,ex,ey
     end
     export binmeans_percentile
     
+
 ## --- End of file

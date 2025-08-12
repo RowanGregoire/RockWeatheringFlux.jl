@@ -31,13 +31,13 @@
     )
 
     # Get mean in regular space for bins with equal numbers of points
-    c, m, ex, ey, ey_bound = binmeans_percentile(x.v, y.v, step=5, bounderror=true)
+    c, m, ex, ey = binmeans_percentile(x.v, y.v, binwidth=5)
 
     # Update percentiles to work for plotting
-    l, u = untupleify(ey_bound)
-    l = m .- l      # Lower bound
-    u = u .- m      # Upper bound
-    ey_bound = [(l[i]*2, m[i]*2) for i in eachindex(l)]
+    # l, u = untupleify(ey_bound)
+    # l = m .- l      # Lower bound
+    # u = u .- m      # Upper bound
+    # ey_bound = [(l[i]*2, m[i]*2) for i in eachindex(l)]
 
     # Fit slope to means
     fobj = yorkfit(collect(c), ex, log.(m), log.(ey))
@@ -70,13 +70,13 @@
     Plots.scatter!(h, c, m, yerror=ey*2, label="",
         msc=:auto, linecolor=:black, linewidth=2, markersize=0,
     )
-    Plots.scatter!(h, c, m, label="Binned Means ± 2 SEM", 
-        msc=:auto, color=:black,
-        markersize = 5,
-    )
     Plots.plot!(h, 1:length(model), model, label="",
         # label="exp(slope * 0.0098) + 2.97)", 
         color=:black, linewidth=3
+    )
+    Plots.scatter!(h, c, m, label="Binned Means ± 2 SEM", 
+        msc=:white, color=:black,
+        markersize = 5,
     )
 
     display(h)
