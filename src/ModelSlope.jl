@@ -79,7 +79,7 @@
     fobj = yorkfit(c, ex, log.(m), log.(ey))
     emmkyr(slp) = exp(slp * (fobj.slope) + (fobj.intercept))
     export emmkyr
-    # TODO: update hard-coded version of the function
+    # FIXME: update hard-coded version of the function
     
     
 ## --- Plot results

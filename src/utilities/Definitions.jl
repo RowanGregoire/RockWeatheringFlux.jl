@@ -431,8 +431,8 @@
             "dolerit", "leucophyre", "glenmuirite", "jotunite", "labradorite", "luscladite", 
             "theralite", "norite", "troctolite", "sebastianite", "eclogite", "amphibolit", 
             "rodingite", "corganite", "corgaspinite", "mafic pluton", "ophiolit", "mafic intrus",)
-        diorite = ("diorit", "iorite", "jotunite", "marscoite", "sanukite", "intermediate pluton",
-            "intermediate-felsic pluton",)
+        diorite = ("diorit", "iorite", "jotunite", "marscoite", "sanukite", "sanukitoid", 
+            "intermediate pluton", "intermediate-felsic pluton", )
         trondhjemite =  ("trondhjemite", "trond", "ttg",)
         tonalite = ("tonalit", "adamellite", "enderbite", "ttg",)
         granodiorite = ("granodiorite", "ttg",)

@@ -7,15 +7,12 @@
 
 
 ## --- Preallocate / Local definitions
-    # elem = :MgO                              # Element of interest
-    elem = :SiO2
     elem_error = 1.0                         # Assumed element of interest (SiO₂) error
     age_error = 5                            # Minimum age error (%)
     age_error_abs = 50                       # Minimum age error (Ma)
     nsims = Int(1e7)                         # 10 M simulations
 
     xmin, xmax = 40, 80                      # Silica
-    # xmin, xmax, xbins  = 0, 50, 300          # MgO
     xbins = Int((xmax - xmin) / 0.2)
     xedges = xmin:(xmax-xmin)/xbins:xmax
     ymin, ymax = 0, 3800                     # Age
@@ -27,7 +24,7 @@
 
     # Set file 
     suffix = RockWeatheringFlux.version * "_" * RockWeatheringFlux.tag
-    fpath = "src/visualization/composition/shortcuts/SilicaAgeDistribution_$(elem)_" * suffix * ".h5"
+    fpath = "src/visualization/composition/shortcuts/SilicaAgeDistribution_SiO2_" * suffix * ".h5"
 
     # Preallocate 2D histogram data storage
     out_bulk = NamedTuple{target}(zeros(ybins, xbins) for _ in target)
@@ -49,11 +46,11 @@
     redo_2D_bulk = redo_bulk 
     redo_2D_matched = redo_matched 
 
-    # [CHANGE ME]
-    # The exception to this is debugging. Say we resampled something, and we want to recalculate 
-    # the 2D histogram for some reason using that data.
-    redo_2D_bulk = true
-    redo_2D_matched = true
+    # # [CHANGE ME]
+    # # The exception to this is debugging. Say we resampled something, and we want to recalculate 
+    # # the 2D histogram for some reason using that data.
+    # redo_2D_bulk = true
+    # redo_2D_matched = true
 
     if (redo_bulk != redo_2D_bulk) || (redo_matched != redo_2D_matched)
         @warn "Your switches are in debugging mode"
@@ -66,11 +63,9 @@
         simbulk = NamedTuple{target}(Array{Float64}(undef, nsims, 2) for _ in target)
 
         # Compute age uncertainties 
-        # TODO: re-run and see the impact of changing uncertainties
         ageuncert = nanadd.(bulk.Age_Max, .- bulk.Age_Min) ./ 2;
         for i in eachindex(ageuncert)
-            # ageuncert[i] = max(bulk.Age[i]*age_error, ageuncert[i], age_error_abs)
-            ageuncert[i] = max(bulk.Age[i]*age_error, ageuncert[i])
+            ageuncert[i] = max(bulk.Age[i]*age_error/100, ageuncert[i], age_error_abs)
         end
 
         # Restrict to samples with data and resample 
@@ -79,8 +74,8 @@
             s = t .& bulk_cats[key]
             k = invweight(bulk.Latitude[s], bulk.Longitude[s], bulk.Age[s])
             p = 1.0 ./ ((k .* nanmedian(5.0 ./ k)) .+ 1.0)
-            data = [bulk[elem][s] bulk.Age[s]]
-            uncertainty = [fill(0.1, count(s)) ageuncert[s]]
+            data = [bulk.SiO2[s] bulk.Age[s]]
+            uncertainty = [fill(elem_error, count(s)) ageuncert[s]]
             simbulk[key] .= bsresample(data, uncertainty, nsims, p)
         end
     end
@@ -101,7 +96,7 @@
             s = t .& match_cats[key]
             k = invweight_age(sampleage[s])
             p = 1.0 ./ ((k .* nanmedian(5.0 ./ k)) .+ 1.0)
-            data = [mbulk[elem][s] sampleage[s]]
+            data = [mbulk.SiO2[s] sampleage[s]]
             uncertainty = [fill(elem_error, count(s)) ageuncert[s]]
             sim_mbulk[key] .= bsresample(data, uncertainty, nsims, p)
         end
@@ -254,7 +249,7 @@
     # # Assemble The Big Plot™
     # # But just for looks. Do this in illustrator because this keeps moving stuff around
     h = Plots.plot(fig..., layout=(3, 1), size=(1000,1300))
-    # savefig(h, "$filepath/heatmap_all_classes.pdf")
+    savefig(h, "$filepath/heatmap.pdf")
     display(h)
 
 

@@ -517,10 +517,6 @@
     Given a `Tuple` of `BitVectors`, return a `BitVector` that is `true` at index `i` iff 
     all elements of the `Tuple` are `false` at index `i`.
 
-    If `cats` is a `NamedTuple` of rock types defined by `get_cats`, specify `major` 
-    as `true` or `false` to decrease runtime. `major` is `true` if `cats` contains only 
-    `sed`, `ign`, `met`, and `cover`.
-
     """
     function find_unmatched(cats)
         matched = falses(length(cats[1]))

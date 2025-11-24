@@ -44,7 +44,7 @@
     )
 
 
-## --- Matched Geochemical Data and Macrostrat / Burwell
+## --- Matched Geochemical Data and Macrostrat
     # Matched samples 
     fid = readdlm(matchedbulk_io)
     gchem_ind = Int.(vec(fid[:,1]))

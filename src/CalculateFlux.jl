@@ -45,7 +45,7 @@
     # basin slope in the uncertainty of the erosion-slope model, so we don't 
     # need to double-propagate it here.
     rockslope = movingwindow(srtm15_slope, rocklat, rocklon, srtm15_sf, n=5)
-    rockslope = Measurements.value.(rockslope)    
+    rockslope = Measurements.value.(rockslope)
     rockslope[rockslope .>= 1000] .= NaN;
     
     # # Optionally save and load data from a tsv if your computer is small and weak 
@@ -57,7 +57,15 @@
     rock_ersn = emmkyr.(rockslope);
     rock_ersn[rock_ersn .> 10_000] .= NaN;
 
-    @info "$(count(isnan.(rock_ersn))) samples excluded for weird slopes."
+    @info "$(count(isnan.(rock_ersn))) samples excluded for having weird slopes."
+
+    # Save data to our favorite intermediate file holder 
+    writedlm(erosion_rates, 
+        vcat(hcat("erosion rate mm/kyr", "erosion rate 1sigma", "slope m/km"), 
+             hcat(Measurements.value.(rock_ersn), Measurements.uncertainty.(rock_ersn), 
+                  Measurements.value.(rockslope))
+            )
+    )
 
 
 ## --- Calculate bulk erosion and erosion by element at each point 
