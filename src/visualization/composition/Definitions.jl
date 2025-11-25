@@ -18,7 +18,7 @@
     # Standardized color schemes 
     colors_covariance = (
         a = parse(Colorant, "#5b80bb"),             # Based on managua blues
-        b = parse(Colorant, "#bb5b80"),
+        b = parse(Colorant, "#c84e04"),
     )
     colors_contrast = (
         a = parse(Colorant, "#913b5b"),             # Based on managua oranges

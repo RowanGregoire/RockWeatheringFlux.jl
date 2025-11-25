@@ -59,13 +59,13 @@
         size=(600,400),
         # left_margin=(10,:px), bottom_margin=(10,:px)
     )
-    Plots.scatter!(basin_srtm.avg_slope,octopusdata.ebe_mmkyr, label="Be-10 (n = $(count(t_be)))", 
+    Plots.scatter!(basin_srtm.avg_slope,octopusdata.ebe_mmkyr, label="¹⁰Be (n = $(count(t_be)))", 
         msc=:auto, color=colors_covariance.a, 
-        markersize = 2,
+        markersize = 2, alpha = 0.5,
     )
-    Plots.scatter!(h, basin_srtm.avg_slope,octopusdata.eal_mmkyr, label="Al-26 (n = $(count(t_al)))", 
+    Plots.scatter!(h, basin_srtm.avg_slope,octopusdata.eal_mmkyr, label="²⁶Al (n = $(count(t_al)))", 
         msc=:auto, color=colors_covariance.b, 
-        markersize = 2,
+        markersize = 2, alpha = 0.75,
     )
     Plots.scatter!(h, c, m, yerror=ey*2, label="",
         msc=:auto, linecolor=:black, linewidth=2, markersize=0,

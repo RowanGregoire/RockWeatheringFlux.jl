@@ -80,6 +80,8 @@
     emmkyr(slp) = exp(slp * (fobj.slope) + (fobj.intercept))
     export emmkyr
     # FIXME: update hard-coded version of the function
+
+    @info "emmkyr(slp) = exp(slp * $(fobj.slope) + $(fobj.intercept))"
     
     
 ## --- Plot results
