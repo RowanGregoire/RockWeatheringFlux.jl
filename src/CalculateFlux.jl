@@ -322,12 +322,13 @@
     writedlm(frac_contributed_out_csv, vcat(pubcols, hcat(rows2, vcat(pubresult, pubsurf))), ',')
 
     # Print to terminal
+    # FIND: In text sec: the composition of eroded material
     target = (:sed, :volc, :plut, :bulk)
     contribution = NamedTuple{classes}(result_contribution.vals[end,:].*100)
     @info "Surficial abundance / fractional contribution to erosion: $target"
     println(
-        """$(join([round(matched_surficial[k], sigdigits=3) for k in target], "; "))
-        $(join([round(contribution[k], sigdigits=3) for k in target], "; "))
+        """surf   : $(join([round(matched_surficial[k]*100, sigdigits=3) for k in target], "; "))
+        contrib: $(join([round(contribution[k], sigdigits=3) for k in target], "; "))
         """
     )
 
@@ -445,6 +446,7 @@
     out_anhydrous[end] = string(round(sum(composition_anhydrous.vals), sigdigits=4))
 
     # Print to terminal 
+    # FIND: S3
     @info "Composition of eroded material: $target + anhydrous"
     for i in eachindex(out)
         println("$(out[i] * out_anhydrous[i])")
