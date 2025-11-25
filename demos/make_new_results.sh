@@ -8,5 +8,7 @@ julia --project="Project.toml" dev/fixmacrostrat.jl     # Macrostrat lithology
 julia --project="Project.toml" src/ScreenCombined.jl    # Combined geochemistry 
 
 # Using existing lith classes and geochemical screenings, re-run for results 
+julia --project="Project.toml" src/SampleMatch.jl
 julia --project="Project.toml" src/CalculateFlux.jl
 julia --project="Project.toml" src/UpperCrustComposition.jl  
+julia --project="Project.toml" src/SurfaceLithology.jl
