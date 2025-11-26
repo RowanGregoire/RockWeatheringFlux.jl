@@ -158,7 +158,8 @@
         # Final formatting
         Plots.ylims!(0, round(maximum([n₁; n₂; u.density]), digits=2)+0.02)
         npoints = count(match_cats[fig_types[i]])
-        Plots.annotate!(((0.03, 0.97), ("n = $npoints", 18, :left, :top)))
+        # Plots.annotate!(((0.03, 0.97), ("n = $npoints", 18, :left, :top)))
+        @info "$(fig_names[i]) n = $npoints"    # Done in Illustrator
         fig[i] = h
     end
 
@@ -166,20 +167,19 @@
     # ylabel!(fig[1], "Relative Abundance")
     # xlabel!(fig[2], "SiO2 [wt.%]")
 
-    # Shared legend
-    # Plots.plot!(fig[3], [0],[0], color=:white, linecolor=:match, label=" ")
-    Plots.plot!(fig[3], [0],[0], 
-        label="This study",
-        seriestype=:bar, 
-        color=colors.ign, linewidth=0.5, linecolor=colors.ign, alpha=0.3,
-    )
-    Plots.plot!(fig[3], [0],[0], 
-        label="Kernel Density Estimate",
-        seriestype=:path,
-        color=colors.ign, linewidth=4,
-    )
-    Plots.plot!(fig[3], [0], [0], linewidth=2, color=:black, linestyle=:dot,
-        label="Keller et al., 2015")
+    # Shared legend > now done in Illustrator
+    # Plots.plot!(fig[3], [0],[0], 
+    #     label="This study",
+    #     seriestype=:bar, 
+    #     color=colors.ign, linewidth=0.5, linecolor=colors.ign, alpha=0.3,
+    # )
+    # Plots.plot!(fig[3], [0],[0], 
+    #     label="Kernel Density Estimate",
+    #     seriestype=:path,
+    #     color=colors.ign, linewidth=4,
+    # )
+    # Plots.plot!(fig[3], [0], [0], linewidth=2, color=:black, linestyle=:dot,
+    #     label="Keller et al., 2015")
 
     # Assemble plots
     h = Plots.plot(fig..., layout=(1, 3), size=(2000, 500), 
