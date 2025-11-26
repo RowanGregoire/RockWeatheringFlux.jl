@@ -247,6 +247,7 @@
     
 ## --- Communal legend?? 
     h_leg = plot(
+        fontfamily=:Helvetica,
         fg_color_legend=:transparent, 
         bg_color_legend=:transparent,
         legendfont=12, 
