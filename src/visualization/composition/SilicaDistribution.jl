@@ -17,7 +17,7 @@
     SiO₂_error = 1.0        # Given error in volcanic.mat is 0.01
 
     # Use the existing intermediate file (set FALSE), or re-do it (set TRUE)?
-    redo_resample = false 
+    redo_resample = true 
 
 
 ## --- Load and resample volcanic / plutonic data from Keller et al., 2015
