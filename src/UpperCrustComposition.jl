@@ -69,7 +69,7 @@
     # Preallocate element rows, lithology columns  
     nmatrix = Array{Float64}(undef, length(allelements), length(class))
     rows = ["Total nonunique samples"; string.(allelements)]
-    cols = hcat("", reshape(string.(collect(keys(class))), 1, :))
+    cols = hcat("element", reshape(string.(collect(keys(class))), 1, :))
 
     for j in eachindex(classkeys) 
         for i in eachindex(allelements) 
