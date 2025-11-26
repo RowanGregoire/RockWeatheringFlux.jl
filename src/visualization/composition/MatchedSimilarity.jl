@@ -22,8 +22,9 @@
         xlims=(0, 3800),
         xticks=(xticklabels, xticklabels), xminorticks=2,
 
-        ylims=(1e-1, maximum(n)*2),
+        ylims=(1, maximum(n)*2),
         yscale=:log10, 
+        yticks=(10 .^(1:2:6)),
         yminorticks=5, tickfontsize=12,
 
         title="A. Temporal Difference", titlefont=16, titlepos=:left,
