@@ -58,6 +58,7 @@
     ) for k in keys(class));
 
     # This assumes that each sample has 100% of the data...
+    # FIND: Dataset S7
     alln = unique_sample(mbulk.Sample_ID, 90)
     @info """ Matched sample metadata:
     $(length(unique(mbulk.Sample_ID))) unique samples matched to $(length(mbulk.Sample_ID)) spatial points.
@@ -105,7 +106,8 @@
     majorcomp = round.([result[:,end][i] for i in eachindex(majors)], digits=1)
     majorcomp_err = round.([result_err[:,end][i] for i in eachindex(majors)], sigdigits=1)
 
-    @info """Bulk crustal composition ($geochem_fid | $macrostrat_io):
+    @info """Bulk crustal composition ± 2 s.e. 
+    ($geochem_fid | $macrostrat_io):
       $(join(rpad.(majors, 8), " "))
       $(join(rpad.(majorcomp, 8), " "))
     ± $(join(rpad.(majorcomp_err, 8), " "))
@@ -149,10 +151,12 @@
 
     # Whole-earth estimate reported with error
     for i in eachindex(majors)
-        out[i] *= "\$$(comp.bulk.comp[i])\\pm$(comp.bulk.sem[i])\$; "
+        out[i] *= "\$$(comp.bulk.comp[i])\\pm$(comp.bulk.sem[i])\$"
     end
-    out[end] *= "$(round(sum(comp.bulk.comp), sigdigits=4)); "
+    out[end] *= "$(round(sum(comp.bulk.comp), sigdigits=4))"
 
+    # FIND: Table 1
+    println("\nTable 1")
     println("composition of sed / volc / plut / bulk")
     for i in eachindex(out)
         println("$(out[i])")
@@ -200,6 +204,9 @@
         round.([mix_condie.*100; misfit_condie], digits=2),
         round.([mix_pease.*100; misfit_pease], digits=2),
     )
+
+    # FIND: Table 2
+    println("\nTable 2")
     println("sed / volc / plut mixing ratios for: bulk / R&G / Gao / Condie / Pease")
     for i in 1:size(out)[1]
         println(join(out[i,:], ";"))
@@ -252,6 +259,9 @@
         round.([mix_condie.*100; misfit_condie], digits=2),
         round.([mix_pease.*100; misfit_pease], digits=2),
     )
+
+    # FIND: SI Table S2
+    println("\nSI Table S2")
     println("ANHYDROUS sed / volc / plut mixing ratios for: bulk / R&G / Gao / Condie / Pease")
     for i in 1:size(out)[1]
         println(join(out[i,:], ";"))
@@ -294,7 +304,7 @@
     #     round.([mix_anhyd.*100; misfit_anhyd], sigdigits=3),
     #     round.([mix_muller.*100; misfit_muller], sigdigits=3),
     # )
-    # println("sed / volc / plut mixing ratios for: bulk / anhydrous / Muller")
+    # println("\nsed / volc / plut mixing ratios for: bulk / anhydrous / Muller")
     # for i in 1:size(out)[1]
     #     println(join(out[i,:], ";"))
     # end
