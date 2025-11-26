@@ -183,9 +183,10 @@
             yflip=true, grid=false, framestyle=:box,
             xlims=(0.5,xbins+0.5),
             ylims=(0.5,ybins+0.5), 
-            xticks=(rescale_in_range.(x, xmin, xmax, 0.5, xbins+0.5), x),
-            yticks=(rescale_in_range.(y, ymin, ymax, 0.5, ybins+0.5), y),
-            xlabel="SiO2 [wt.%]", ylabel="Age [Ma]",
+            # xticks=(rescale_in_range.(x, xmin, xmax, 0.5, xbins+0.5), x),
+            # yticks=(rescale_in_range.(y, ymin, ymax, 0.5, ybins+0.5), y),
+            xticks=false, yticks=false,     # Done in Illustrator
+            # xlabel="SiO2 [wt.%]", ylabel="Age [Ma]",
             size=(600,500),
             titleloc=:left, titlefont = font(12),
             tickfontsize=12, labelfontsize=14,
@@ -198,7 +199,7 @@
         Plots.heatmap!(h1, out_bulk[subclass[i]],
             colorbar=false,
             color=colorgrad,
-            title="$(subfig[i][1]). Resampled $(labels[i])\n",
+            # title="$(subfig[i][1]). Resampled $(labels[i])\n",
         )
         savefig(h1, "$filepath/heatmap_$(subclass[i])_resampled.pdf")
 
@@ -207,7 +208,7 @@
         Plots.heatmap!(h2, out_mbulk[subclass[i]], 
             colorbar=false,
             color=colorgrad,
-            title="$(subfig[i][2]). Matched $(labels[i])\n",
+            # title="$(subfig[i][2]). Matched $(labels[i])\n",
         )
         savefig(h2, "$filepath/heatmap_$(subclass[i])_matched.pdf")
 
