@@ -108,7 +108,7 @@
     
     # Mapped lithologic surficial abundance 
     # This doesn't get re-read, so we can just export directly to a publishable format
-    mapped_surface_lith = "$results/mapped_surface_lithology.csv"
+    mapped_surface_lith = "$results/surfaceexposure.csv"
 
     # Compositional data also depends on the dataset
     results *= "/$dataset"
