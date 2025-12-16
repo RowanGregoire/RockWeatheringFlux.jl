@@ -98,6 +98,12 @@
     #     mcolor=:black, markershape=:none,
     # )
 
+    # Chondrite values from McDonough and Sun, 1995 
+    chond = (La=0.237, Ce=0.613, Pr=0.0928, Nd=0.457, Sm=0.148, Eu=0.0563, Gd=0.199,
+        Tb=0.0361, Dy=0.246, Ho=0.0546, Er=0.16, Tm=0.0247, Yb=0.161, Lu=0.0246,
+    );
+    chond = NamedTuple{keys(chond)}(1 for _ in keys(chond))
+
 
 ## --- Surface Earth
     h_surf = deepcopy(h)
@@ -106,6 +112,7 @@
     # Error bars
     spidergram!(h_surf, 
         collect(values(rudnick_gao) .± values(rudnick_gao_err)),
+        normalizer=chond,
         label="", 
         seriestype=:scatter, markersize=0,
         msw=2, msc=colors_source.rudnick, 
@@ -114,21 +121,25 @@
 
     # Values 
     spidergram!(h_surf, shaw, label="Canadian Shield (Shaw et al., 1967, 1976)", 
+        normalizer=chond,
         seriescolor=colors_source.shaw, msc=colors_source.shaw, markercolor=:white,
         markershape=:diamond, markersize=5,
         mswidth=1.5, linewidth=1.5,
     )
     spidergram!(h_surf, condie, label="Exposed Crust (Condie, 1993)", 
+        normalizer=chond,
         seriescolor=colors_source.condie, msc=colors_source.condie, markercolor=:white,
         markershape=:diamond, markersize=5,
         mswidth=1.5, linewidth=1.5,
     )
     spidergram!(h_surf, gao, label="Exposed crust (Gao et al., 1998)", 
+        normalizer=chond,
         seriescolor=colors_source.gao, msc=colors_source.gao, markercolor=:white,
         markershape=:diamond, markersize=5,
         mswidth=1.5, linewidth=1.5,
     )
     spidergram!(h_surf, rudnick_gao, 
+        normalizer=chond,
         label="Upper crust (Rudnick and Gao, 2014)", 
         seriescolor=colors_source.rudnick, msc=colors_source.rudnick, markercolor=:white,
         markershape=:diamond, markersize=5,
