@@ -106,7 +106,7 @@
         size=(600,400),
     )
 
-    # Plot data for this study and ± 20%, 10%
+    # Plot data for this study and ± 25%, 10%
     x = 1:length(anhydrous_majors)
     plot!(h_base, 
         [xlims(h_base)[1], xlims(h_base)[2], xlims(h_base)[2], xlims(h_base)[1]], 
@@ -115,7 +115,7 @@
     )
     plot!(h_base, 
         [xlims(h_base)[1], xlims(h_base)[2], xlims(h_base)[2], xlims(h_base)[1]], 
-        [0.85, 0.9, 1.1, 1.1],
+        [0.9, 0.9, 1.1, 1.1],
         seriestype=:shape, color=:darkgrey, lcolor=:match, label=""
     )
     plot!(h_base, collect(xlims(h_base)), [1,1], label="", color=:black, linewidth=3)
