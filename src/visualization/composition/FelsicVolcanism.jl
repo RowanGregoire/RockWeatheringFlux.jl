@@ -10,6 +10,7 @@
 
 ## --- Load data 
     # Heatmap
+    # Since this uses a shortcut file, you gotta run SilicaAgeDistribution.jl before you can run this
     suffix = RockWeatheringFlux.version * "_" * RockWeatheringFlux.tag
     fpath = "src/visualization/composition/shortcuts/SilicaAgeDistribution_SiO2_" * suffix * ".h5"
 
