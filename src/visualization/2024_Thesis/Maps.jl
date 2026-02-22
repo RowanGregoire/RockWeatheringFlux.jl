@@ -18,6 +18,13 @@
     header = read(fid["bulk"]["header"])
     data = read(fid["bulk"]["data"])
     bulk = NamedTuple{Tuple(Symbol.(header))}([data[:,i] for i in eachindex(header)])
+    
+    header = read(fid["bulktypes"]["bulk_cats_head"])
+    data = read(fid["bulktypes"]["bulk_cats"])
+    data = @. data > 0
+    bulk_cats = NamedTuple{Tuple(Symbol.(header))}([data[:,i] for i in eachindex(header)])
+    include_minor!(bulk_cats);
+
     close(fid)
 
     
@@ -73,16 +80,17 @@
     ax = GeoAxis(f[1,1]; dest = "+proj=wintri", coastlines=true)
     h = CairoMakie.scatter!(ax, 
         bulk.Longitude[t], bulk.Latitude[t], 
-        color=bulk.Age[t], colormap=cscheme, 
+        color=bulk.SiO2[t], colormap=:berlin, 
         markersize = 5
     )
-    Colorbar(f[1,2], label = "Age [Ma.]", 
+    Colorbar(f[1,2], label = "SiO2₂ [wt.%]", 
         height = Relative(0.75), 
-        limits=(0,3800), 
-        colormap=cscheme
+        limits=(0,100), 
+        colormap=:berlin
     )
     display(f)
-    save("$filepath/map_geochemical.pdf", f)
+    # save("$filepath/map_geochemical.pdf", f)
+    save("map_silica.png", f)
 
 
 ## --- Global distribution and age of mapped samples 
