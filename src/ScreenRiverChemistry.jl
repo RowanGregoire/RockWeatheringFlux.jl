@@ -85,68 +85,68 @@
 
 
 ## --- [GLORICH]
-    # Preallocate 
-    nhydro = length(hydro[1])
-    hydro_out = NamedTuple{allelements}(Array{Float64}(undef, nhydro) for _ in allelements);  
+    # # Preallocate 
+    # nhydro = length(hydro[1])
+    # hydro_out = NamedTuple{allelements}(Array{Float64}(undef, nhydro) for _ in allelements);  
 
-    # The river chemistry is... tricky. I really want to just look at the major elements
-    # (REEs are generally insoluable so like... not reported) but I also do want to screen 
-    # for outliers. So What I'm gonna do is as above, but I'm gonna make a NamedTuple that's 
-    # mostly blank to send it through screen_outliers!(). Then I'll just take the stuff I 
-    # want and save it to a file.
+    # # The river chemistry is... tricky. I really want to just look at the major elements
+    # # (REEs are generally insoluable so like... not reported) but I also do want to screen 
+    # # for outliers. So What I'm gonna do is as above, but I'm gonna make a NamedTuple that's 
+    # # mostly blank to send it through screen_outliers!(). Then I'll just take the stuff I 
+    # # want and save it to a file.
 
-    # Convert umol / L to wt.% element oxide
-        # umol -> mol (1e-6); g/kg -> wt.% (1e-1), 
-        # mol -> g (molar mass Ca), Ca -> CaO (molar mass CaO / molar mass Ca)
-        # divide Na2O and K2O by 2 because 2 cations / oxide
-    hydro_out.CaO .= hydro.Ca * 1e-7 * molarmasspercation["CaO"]
-    hydro_out.MgO .= hydro.Mg * 1e-7 * molarmasspercation["MgO"]
-    hydro_out.Na2O .= hydro.Na * 1e-7 * molarmasspercation["Na2O"] / 2
-    hydro_out.K2O .= hydro.K * 1e-7 * molarmasspercation["K2O"] / 2
-    hydro_out.SiO2 .= hydro.SiO2 * 1e-7 * molarmasspercation["SiO2"]
-    # No TiO2, Al2O3, Fe2O3 or FeO (these are insoluable so like... of course)
+    # # Convert umol / L to wt.% element oxide
+    #     # umol -> mol (1e-6); g/kg -> wt.% (1e-1), 
+    #     # mol -> g (molar mass Ca), Ca -> CaO (molar mass CaO / molar mass Ca)
+    #     # divide Na2O and K2O by 2 because 2 cations / oxide
+    # hydro_out.CaO .= hydro.Ca * 1e-7 * molarmasspercation["CaO"]
+    # hydro_out.MgO .= hydro.Mg * 1e-7 * molarmasspercation["MgO"]
+    # hydro_out.Na2O .= hydro.Na * 1e-7 * molarmasspercation["Na2O"] / 2
+    # hydro_out.K2O .= hydro.K * 1e-7 * molarmasspercation["K2O"] / 2
+    # hydro_out.SiO2 .= hydro.SiO2 * 1e-7 * molarmasspercation["SiO2"]
+    # # No TiO2, Al2O3, Fe2O3 or FeO (these are insoluable so like... of course)
 
-    # Screen outliers as described above
-    hydro_cats = get_cats(false, nhydro)[2];
-    [hydro_cats[k] .= true for k in keys(hydro_cats)];
-    screen_outliers!(hydro_out, hydro_cats)
+    # # Screen outliers as described above
+    # hydro_cats = get_cats(false, nhydro)[2];
+    # [hydro_cats[k] .= true for k in keys(hydro_cats)];
+    # screen_outliers!(hydro_out, hydro_cats)
 
-    # What's the total concentration of all dissolved load? 
-    otherload = nansum(hcat(
-        # Add only non-carbon elements from carbonate ions so we don't double-count carbon
-        hydro.HCO3 * 1e-7 * (molarmass["H"] + molarmass["O"]*3),
-        hydro.CO3 * 1e-7 * (molarmass["O"]*3),
+    # # What's the total concentration of all dissolved load? 
+    # otherload = nansum(hcat(
+    #     # Add only non-carbon elements from carbonate ions so we don't double-count carbon
+    #     hydro.HCO3 * 1e-7 * (molarmass["H"] + molarmass["O"]*3),
+    #     hydro.CO3 * 1e-7 * (molarmass["O"]*3),
 
-        # Everything else as normal 
-        hydro.Cl * 1e-7 * (molarmass["Cl"]),
-        hydro.F * 1e-7 * (molarmass["F"]),
-        hydro.DSr * 1e-7 * (molarmass["Sr"]),   # Dissolved Sr 
-        hydro.TC * 1e-7 * (molarmass["C"]),     # Total carbon 
-        hydro.TN * 1e-7 * (molarmass["N"]),     # Total nitrogen 
-        hydro.TP * 1e-7 * (molarmass["P"]),     # Total phosphorus 
-    ), dims=2)
-    totalload = nansum(hcat(otherload, hydro_out.CaO, hydro_out.MgO, hydro_out.Na2O, 
-        hydro_out.K2O, hydro_out.SiO2), dims=2
-    )
+    #     # Everything else as normal 
+    #     hydro.Cl * 1e-7 * (molarmass["Cl"]),
+    #     hydro.F * 1e-7 * (molarmass["F"]),
+    #     hydro.DSr * 1e-7 * (molarmass["Sr"]),   # Dissolved Sr 
+    #     hydro.TC * 1e-7 * (molarmass["C"]),     # Total carbon 
+    #     hydro.TN * 1e-7 * (molarmass["N"]),     # Total nitrogen 
+    #     hydro.TP * 1e-7 * (molarmass["P"]),     # Total phosphorus 
+    # ), dims=2)
+    # totalload = nansum(hcat(otherload, hydro_out.CaO, hydro_out.MgO, hydro_out.Na2O, 
+    #     hydro_out.K2O, hydro_out.SiO2), dims=2
+    # )
 
-    # Normalize to 100% 
+    # # Normalize to 100% 
 
-    # Save just a file of major elements (just so things don't totally go off the rails) 
-    out = vcat(
-        ["SiO2" "Al2O3" "FeOT" "TiO2" "MgO" "CaO" "Na2O" "K2O" "Volatiles"],
-        hcat(
-            hydro_out.SiO2,     
-            fill(NaN, nhydro),  # Al2O3
-            fill(NaN, nhydro),  # FeOT
-            fill(NaN, nhydro),  # TiO2 
-            hydro_out.MgO,
-            hydro_out.CaO,
-            hydro_out.Na2O,
-            hydro_out.K2O,
-            fill(NaN, nhydro),  # Volatiles
-        )
-    )
-    writedlm("output/GlobalRivers/GLORICH_major_screened.tsv", out)
+    # # Save just a file of major elements (just so things don't totally go off the rails) 
+    # out = vcat(
+    #     ["SiO2" "Al2O3" "FeOT" "TiO2" "MgO" "CaO" "Na2O" "K2O" "Volatiles"],
+    #     hcat(
+    #         hydro_out.SiO2,     
+    #         fill(NaN, nhydro),  # Al2O3
+    #         fill(NaN, nhydro),  # FeOT
+    #         fill(NaN, nhydro),  # TiO2 
+    #         hydro_out.MgO,
+    #         hydro_out.CaO,
+    #         hydro_out.Na2O,
+    #         hydro_out.K2O,
+    #         fill(NaN, nhydro),  # Volatiles
+    #     )
+    # )
+    # writedlm("output/GlobalRivers/GLORICH_major_screened.tsv", out)
 
     
 ## --- End of File 
