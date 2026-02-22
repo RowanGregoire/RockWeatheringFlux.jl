@@ -17,6 +17,7 @@ The repo will automatically:
 If running the code from GitHub, you will have to manually add:
 - The `combined.tsv` file to the `data/` directory.
 - (OPTIONAL) The `crn_basins_global.kml.gz` to the `data/octopus/` directory. Alternatively, use `output/basins/octopusdata.tsv`. 
+- The `volcanic.mat` and `plutonic.mat` files from Keller et al., 2015 ([10.1038/nature14584](doi.org/10.1038/nature14584)) to the `data/volcanicplutonic` directory (you will also need to create the directory).
 
 These files are included, and can be found in, the version of the repo archived on [OSF](https://doi.org/10.17605/OSF.IO/3RAFH).
 
