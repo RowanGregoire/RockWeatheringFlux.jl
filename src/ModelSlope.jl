@@ -49,7 +49,7 @@
 
 
 ## --- Alternatively, load pregenerated OCTOPUS and slope data for each basin
-    # Windows machines must start at this step
+    # Windows machines must start at this step for OCTOPUS data (slope stuff should work)
     # Errors are 1-σ standard deviations
     @info "Loading pre-parsed OCTOPUS and basin slope data"
     octopusdata = importdataset(octopusdata_basins,'\t', importas=:Tuple)
