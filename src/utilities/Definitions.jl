@@ -88,6 +88,9 @@
 
 # --- Misc. intermediate files 
 
+    # Make directories for river chemistry
+    !ispath("output/GlobalRivers") && run(`mkdir -p "output/GlobalRivers"`) 
+
     # Indices and lithologies of matched samples 
     matchedbulk_io = "output/matched/$dataset/matchedinds_$(version)_$tag.tsv"
 
