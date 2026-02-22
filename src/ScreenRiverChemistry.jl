@@ -8,7 +8,7 @@
     ID = importdataset("data/GloRiSe/SedimentDatabase_ID.csv", ',', importas=:Tuple);
     TE = importdataset("data/GloRiSe/SedimentDatabase_TE.csv", ',', importas=:Tuple);
     ME = importdataset("data/GloRiSe/SedimentDatabase_ME_Nut.csv", ',', importas=:Tuple);
-    hydro = importdataset("data/GLORICH/hydrochemistry.csv", ',', importas=:Tuple);
+    # hydro = importdataset("data/GLORICH/hydrochemistry.csv", ',', importas=:Tuple);
 
     # Required elements
     majors, minors = get_elements();
